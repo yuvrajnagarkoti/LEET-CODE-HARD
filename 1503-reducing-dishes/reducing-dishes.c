@@ -1,44 +1,24 @@
 int compare(const void *a, const void *b)
 {
-    return (*(int *)a - *(int *)b);
-}
-
-int getMax(int arr[], int size)
-{
-    int maxVal = arr[0];
-    for (int i = 1; i < size; i++)
-    {
-        if (arr[i] > maxVal)
-        {
-            maxVal = arr[i];
-        }
-    }
-    return maxVal;
+    return (*(int *)b - *(int *)a); // Sort in descending order
 }
 
 int maxSatisfaction(int *satisfaction, int size)
 {
-    qsort(satisfaction, size, sizeof(int), compare); // Sort in ascending order
-    int index = 0;
-    while (index < size && satisfaction[index] <= 0)
+    qsort(satisfaction, size, sizeof(int), compare); // Sort in descending order
+
+    int maxSum = 0, currSum = 0, total = 0;
+    
+    for (int i = 0; i < size; i++)
     {
-        index++; // Find the first positive element
-    }
-    if (index == size)
-    {
-        return 0; // If all elements are non-positive
-    }
-    int *sums = (int *)malloc(size * sizeof(int));
-    int count = 0;
-    for (int i = 0; index - i >= 0; i++)
-    {
-        int sum = 0, factor = 0;
-        for (int j = index - i; j < size; j++)
+        currSum += satisfaction[i];
+        if (currSum + total > total) // Only add if beneficial
         {
-            factor++;
-            sum += satisfaction[j] * factor;
+            total += currSum;
+            maxSum = total;
         }
-        sums[count++] = sum;
-    }
-    return getMax(sums, count);
+        else
+            break;
+    }  
+    return maxSum;
 }
