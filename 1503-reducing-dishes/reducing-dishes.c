@@ -3,53 +3,44 @@ int compare(const void *a, const void *b)
     return (*(int *)a - *(int *)b);
 }
 
-int findMax(int arr[], int n)
+int getMax(int arr[], int size)
 {
-    int max = arr[0];
-    for (int i = 1; i < n; i++)
+    int maxVal = arr[0];
+    for (int i = 1; i < size; i++)
     {
-        if (arr[i] > max)
+        if (arr[i] > maxVal)
         {
-            max = arr[i];
+            maxVal = arr[i];
         }
     }
-    return max;
+    return maxVal;
 }
 
-int maxSatisfaction(int *satisfaction, int n)
+int maxSatisfaction(int *satisfaction, int size)
 {
-    qsort(satisfaction, n, sizeof(int), compare);
-    
-    int i, j, k, sum, current;
-    int *a = (int *)malloc(n * sizeof(int));
-    if (!a) return 0; // Memory allocation check
-
-    int key = 0;
-    while (key < n && satisfaction[key] <= 0) // Prevent out-of-bounds access
+    qsort(satisfaction, size, sizeof(int), compare); // Sort in ascending order
+    int index = 0;
+    while (index < size && satisfaction[index] <= 0)
     {
-        key++;
+        index++; // Find the first positive element
     }
-
-    if (key == n) // All elements are non-positive
+    if (index == size)
     {
-        free(a);
-        return 0;
+        return 0; // If all elements are non-positive
     }
-
-    j = 0;
-    for (i = 0; key - i >= 0; i++) // Fixing the loop condition
+    int *sums = (int *)malloc(size * sizeof(int));
+    int count = 0;
+    for (int i = 0; index - i >= 0; i++)
     {
-        sum = 0;
-        current = 0;
-        for (k = key - i; k < n; k++)
+        int sum = 0, factor = 0;
+        for (int j = index - i; j < size; j++)
         {
-            current++;
-            sum += satisfaction[k] * current; // Fix index usage
+            factor++;
+            sum += satisfaction[j] * factor;
         }
-        a[j++] = sum;
+        sums[count++] = sum;
     }
-
-    int maxVal = findMax(a, j); // Only consider filled elements
-    free(a); // Free allocated memory
-    return maxVal;
+    int maxSatisfactionValue = getMax(sums, count);
+    free(sums); // Free allocated memory
+    return maxSatisfactionValue;
 }
