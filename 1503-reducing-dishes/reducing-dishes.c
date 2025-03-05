@@ -40,7 +40,5 @@ int maxSatisfaction(int *satisfaction, int size)
         }
         sums[count++] = sum;
     }
-    int maxSatisfactionValue = getMax(sums, count);
-    free(sums); // Free allocated memory
-    return maxSatisfactionValue;
+    return getMax(sums, count);
 }
