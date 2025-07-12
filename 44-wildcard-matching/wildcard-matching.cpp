@@ -8,10 +8,10 @@ public:
         {
             if (j < p.length() && (p[j] == '?' || p[j] == s[i]))
             {
-                // Characters match or '?'
                 i++;
                 j++;
             }
+            
             else if (j < p.length() && p[j] == '*')
             {
                 // Record position of '*'
