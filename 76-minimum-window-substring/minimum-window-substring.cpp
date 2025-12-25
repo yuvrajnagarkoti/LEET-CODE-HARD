@@ -12,23 +12,21 @@ public:
 
         int required = t.length();
         int low = 0;
-        int minLen = INT_MAX;
         int start = 0;
+        int anslen = INT_MAX;
 
         for (int high = 0; high < n; high++)
         {
-            // expand window
             if (need[s[high]] > 0)
                 required--;
             need[s[high]]--;
 
-            // shrink window while valid
             while (required == 0)
             {
                 int currLen = high - low + 1;
-                if (currLen < minLen)
+                if (currLen < anslen)
                 {
-                    minLen = currLen;
+                    anslen = currLen;
                     start = low;
                 }
 
@@ -39,6 +37,6 @@ public:
             }
         }
 
-        return minLen == INT_MAX ? "" : s.substr(start, minLen);
+        return anslen == INT_MAX ? "" : s.substr(start, anslen);
     }
 };
