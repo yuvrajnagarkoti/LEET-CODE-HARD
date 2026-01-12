@@ -1,16 +1,44 @@
-class Solution {
+class Solution
+{
 public:
-    int totalNQueens(int n) {
-        if (n == 1) return 1;
-        else if (n == 2) return 0;
-        else if (n == 3) return 0;
-        else if (n == 4) return 2;
-        else if (n == 5) return 10;
-        else if (n == 6) return 4;
-        else if (n == 7) return 40;
-        else if (n == 8) return 92;
-        else if (n == 9) return 352;
-        
-        return -1; // out of range
+
+    bool check(vector<int> place,int row,int col)
+    {
+        for(int r=row-1;r>=0;r--)
+        {
+            int c=place[r];
+            if( c==col || abs(row-r) == abs(col-c))
+            {
+                return false;
+            }
+        }
+        return true;
     }
+
+    int ans=0;
+    void solve(vector<int> place,int row)
+    {
+        if(row>=place.size())
+        {
+            ans++;
+            return;
+        }
+        for(int i=0;i<place.size();i++)
+        {
+            if(check(place,row,i))
+            {
+                place[row] = i;
+                solve(place,row+1);
+                place[row] = -1;
+            }
+        }
+    }
+
+    int totalNQueens(int n)
+    {
+        vector<int> place(n,-1);
+        solve(place,0);
+        return ans;
+    }
+
 };
